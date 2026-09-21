@@ -97,7 +97,7 @@ def write_sarif_report(report: RCScanReport, path: Path) -> None:
                     "driver": {
                         "name": "RCScan",
                         "version": report.rcscan_version,
-                        "informationUri": "https://rcscan.local/",
+                        "informationUri": "https://github.com/wloreNN/RCScan",
                         "rules": [rules[key] for key in sorted(rules)],
                     }
                 },

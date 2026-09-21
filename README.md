@@ -6,10 +6,7 @@ RCScan is an evidence-driven vulnerability assessment scanner built in Python fo
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 [![Ruff](https://img.shields.io/badge/lint-Ruff-D7FF64)](https://docs.astral.sh/ruff/)
 [![mypy](https://img.shields.io/badge/types-mypy-2A6DB2)](https://mypy-lang.org/)
-
-<!-- F6: add the GitHub Actions badge after the public repository URL is known.
-[![CI](https://github.com/OWNER/RCScan/actions/workflows/quality.yml/badge.svg)](https://github.com/OWNER/RCScan/actions/workflows/quality.yml)
--->
+[![CI](https://github.com/wloreNN/RCScan/actions/workflows/quality.yml/badge.svg)](https://github.com/wloreNN/RCScan/actions/workflows/quality.yml)
 
 ## Overview
 
@@ -248,7 +245,7 @@ An open port does not identify a service. A port number can order probes, but on
 
 ## Testing and engineering quality
 
-The current local baseline is 729 passing tests, with Ruff and mypy passing. Windows manual acceptance has passed for the frozen runtime. GitHub Actions is configured for Ubuntu, Windows, and macOS. Cross-platform CI is configured and will be verified during the final release gate.
+The current local baseline is 729 passing tests, with Ruff and mypy passing. Windows manual acceptance has passed for the frozen runtime. The v1.0 release gate passed on Ubuntu, Windows, and macOS using Python 3.12.
 
 Representative coverage includes authorization and scope boundaries, socket classification, Windows socket regressions, parsers, fingerprinting, TLS, crawling, active rules, false-positive controls, secret handling, authentication boundaries, throttling, reporting, packaging, and wheel/sdist installation.
 
@@ -258,7 +255,7 @@ Active web detection was manually exercised in explicitly authorized PortSwigger
 
 ## Cross-platform support
 
-RCScan is tested locally on Windows and configured for Ubuntu, Windows, and macOS CI on Python 3.12. Later Python versions are allowed by package metadata but are not part of the mandatory matrix.
+The v1.0 release gate passed on Ubuntu, Windows, and macOS using Python 3.12. Later Python versions are allowed by package metadata but are not part of the mandatory matrix.
 
 ## Project structure
 
