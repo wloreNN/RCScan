@@ -1,0 +1,86 @@
+profile:
+  name: safe-default
+
+scope:
+  allow_loopback: false
+  allow_public_targets: false
+  max_targets: 256
+
+scanner:
+  timeout_seconds: 2.0
+  concurrency: 100
+  retries: 1
+
+discovery:
+  enabled: true
+  ports:
+    - 80
+    - 443
+    - 22
+    - 445
+  timeout_seconds: 1.0
+
+fingerprinting:
+  enabled: true
+  timeout_seconds: 2.0
+  max_banner_bytes: 4096
+  max_header_bytes: 8192
+  max_probes_per_port: 3
+  concurrency: 25
+
+vulnerability:
+  enabled: false
+  provider: nvd
+  request_timeout_seconds: 10.0
+  max_response_bytes: 2000000
+  max_references: 10
+  max_candidates_per_identity: 100
+  max_displayed_candidates: 10
+  max_provider_requests_per_scan: 25
+  cache_enabled: true
+  cache_ttl_hours: 24
+  max_cache_entries: 256
+
+findings:
+  enabled: true
+  max_displayed: 20
+
+verification:
+  enabled: false
+  max_requests_per_finding: 2
+  max_total_requests: 20
+  timeout_seconds: 2.0
+  max_response_bytes: 16384
+  concurrency: 2
+
+web_discovery:
+  enabled: false
+  max_pages: 50
+  max_depth: 2
+  concurrency: 4
+  timeout_seconds: 3
+  max_response_bytes: 262144
+  max_links_per_page: 100
+  max_displayed: 10
+
+web_checks:
+  enabled: false
+  max_displayed: 20
+
+active_web_checks:
+  enabled: false
+  max_requests_per_parameter: 4
+  max_total_requests: 30
+  concurrency: 2
+  timeout_seconds: 3
+  max_response_bytes: 262144
+  max_displayed: 20
+
+web_throttling:
+  min_request_interval_seconds: 0.05
+  max_retry_after_seconds: 5
+  max_transient_retries: 1
+
+ports:
+  preset: common
+  max_ports: 4096

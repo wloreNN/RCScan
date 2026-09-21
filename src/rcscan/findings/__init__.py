@@ -1,0 +1,1 @@
+"""Structured, explainable security findings."""

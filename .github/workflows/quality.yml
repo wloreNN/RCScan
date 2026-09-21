@@ -1,0 +1,68 @@
+name: Quality
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ["3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest
+      - run: python -m ruff check .
+      - run: python -m mypy src/rcscan
+
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install build twine
+      - run: python -m build
+      - run: python -m twine check dist/*
+      - name: Install and smoke-test the wheel
+        run: |
+          python -m venv "${RUNNER_TEMP}/wheel-venv"
+          "${RUNNER_TEMP}/wheel-venv/bin/python" -m pip install dist/*.whl
+          installed="$("${RUNNER_TEMP}/wheel-venv/bin/python" -c "import rcscan; print(rcscan.__file__)")"
+          case "$installed" in
+            *site-packages*) ;;
+            *) echo "Installed import did not come from site-packages: $installed"; exit 1 ;;
+          esac
+          "${RUNNER_TEMP}/wheel-venv/bin/rcscan" --version
+          "${RUNNER_TEMP}/wheel-venv/bin/rcscan" --help
+          "${RUNNER_TEMP}/wheel-venv/bin/python" -m rcscan --help
+          "${RUNNER_TEMP}/wheel-venv/bin/rcscan" scan \
+            --target 127.0.0.1 \
+            --scope 127.0.0.1 \
+            --ports 1 \
+            --confirm-authorized \
+            --allow-loopback \
+            --skip-discovery \
+            --no-fingerprint
+      - name: Install the source distribution
+        run: |
+          python -m venv "${RUNNER_TEMP}/sdist-venv"
+          "${RUNNER_TEMP}/sdist-venv/bin/python" -m pip install dist/*.tar.gz
+          "${RUNNER_TEMP}/sdist-venv/bin/rcscan" --version
+          "${RUNNER_TEMP}/sdist-venv/bin/rcscan" --help
+          "${RUNNER_TEMP}/sdist-venv/bin/python" -c "import rcscan"
